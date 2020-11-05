@@ -16,6 +16,7 @@ public class BOJ_1727 {
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
 		System.out.println("abctest");
+
 		male = new int[N+1];
 		female = new int[M+1];
 		dp = new long[N+1][M+1];
