@@ -58,6 +58,8 @@ public class binarsySearch {
 		int c = Integer.parseInt(br.readLine());
 		
 		System.out.println(bin(c));
+
+
 				
 		
 		

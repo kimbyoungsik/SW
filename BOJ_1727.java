@@ -4,6 +4,10 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+/**
+ *  GIT COMMIT TEST
+ */
+
 public class BOJ_1727 {
 
 	static int[] male;

@@ -10,13 +10,27 @@ import java.util.StringTokenizer;
 public class 임계경로 {
 
     static int T,N,M;
-    static ArrayList[] adj;
+    static ArrayList<Node>[] adj;
     static int[][] cost;
     static boolean[] visited;
     static int isCycle = 0;
     static boolean[] finish;
     static Stack stack;
-    static int[] dist;  // 1번공정에서 i NODE 공정까지의 거리
+    static long[] dist;  // 1번공정에서 i NODE 공정까지의 거리
+
+
+    public static class Node{
+        private int s;
+        private int e;
+        private int c;
+
+        Node(int s, int e, int c){
+            this.s = s;
+            this.e = e;
+            this.c = c;
+        }
+
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader (new InputStreamReader(System.in));
@@ -32,10 +46,12 @@ public class 임계경로 {
             M = Integer.parseInt(st.nextToken());
 
             adj = new ArrayList[N+1];
-            cost = new int[N+1][N+1];
+            cost = new int[N+1][2];
             visited = new boolean[N+1];
             finish = new boolean[N+1];
-            dist = new int[N+1];
+            dist = new long[N+1];
+            Node[] nodes = new Node[M+1];
+
 
             for (int i = 0; i <= N; i++) adj[i] = new ArrayList();
 
@@ -46,13 +62,26 @@ public class 임계경로 {
                 int b = Integer.parseInt(st.nextToken());
                 int c = Integer.parseInt(st.nextToken());
 
-                adj[a].add(b);
+                nodes[i] = new Node(a,b,c);
 
-                cost[a][b] = c;
+                adj[a].add(nodes[i]);
 
             }
 
             dfs(1);
+
+            while(!stack.isEmpty()){
+                int here = (int)stack.pop();
+                for (int i = 0; i < adj[here].size(); i++) {
+                    Node node = (Node)adj[here].get(i);
+                    int there = node.e;
+                    int cost = node.c;
+
+                    dist[there] = Math.max(dist[there],dist[here] + cost);
+                }
+
+            }
+
 
             System.out.println("#" + tc +" " + dist[N]);
         }
@@ -64,20 +93,16 @@ public class 임계경로 {
        visited[here] = true;
 
         for (int i = 0; i < adj[here].size(); i++) {
-            int there = (int)adj[here].get(i);
+            Node node = (Node)adj[here].get(i);
+            int there = node.e;
+            int cost = node.c;
 
             if(!visited[there]){
-
-                dist[there] = Math.max(dist[there],dist[here]+ cost[here][there]);
-
                 dfs(there);
-            }else if( !finish[there] ){
-                isCycle = 1;
             }
         }
 
         stack.push(here);
-        finish[here] = true;
 
     }
 
